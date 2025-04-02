@@ -383,8 +383,8 @@ void Tangair_usb2can::CAN_TX_test_thread()
             
         }
 
-        // CAN发送,发送频率为1000hz,实际间隔约为890us
-        CAN_TX_ALL_MOTOR(70);
+        // CAN发送,发送频率为1298.7hz,实际间隔约为770us
+        CAN_TX_ALL_MOTOR(60);
             
 
         // CAN发送计数
@@ -400,6 +400,7 @@ void Tangair_usb2can::CAN_TX_test_thread()
         {
             std::cout << std::endl
                       << "USB2CAN0_CAN1.current_speed_f=  " << USB2CAN0_CAN_Bus_1.ID_1_motor_recieve.current_speed_f << "  rad/s" << std::endl
+                       << "USB2CAN0_CAN1——2.current_speed_f=  " << USB2CAN0_CAN_Bus_1.ID_2_motor_recieve.current_speed_f << "  rad/s" << std::endl
                       << "USB2CAN0_CAN2.current_speed_f=  " << USB2CAN0_CAN_Bus_2.ID_1_motor_recieve.current_speed_f << "  rad/s" << std::endl
                       << "USB2CAN1_CAN1.current_speed_f=  " << USB2CAN1_CAN_Bus_1.ID_1_motor_recieve.current_speed_f << "  rad/s" << std::endl
                       << "USB2CAN1_CAN2.current_speed_f=  " << USB2CAN1_CAN_Bus_2.ID_1_motor_recieve.current_speed_f << "  rad/s" << std::endl;
