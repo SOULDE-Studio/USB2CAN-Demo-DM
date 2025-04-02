@@ -22,20 +22,14 @@
 float uint_to_float(int x_int, float x_min, float x_max, int bits);
 int float_to_uint(float x, float x_min, float x_max, int bits);
 
-#define WHEEL_MOTOR_ON         0x88
-#define WHEEL_MOTOR_OFF        0x80
-#define WHEEL_MOTOR_STOP       0x81
-#define WHEEL_CURRENT_CONTROL  0xA1
-#define WHEEL_SPEED_CONTROL    0xA2
-#define WHEEL_POSION_CONTROL   0xA3
 
-// 灵足电机,此处为RS04参数
+// 达妙电机,此处为DM参数
 #define P_MIN -12.5f
 #define P_MAX 12.5f
-#define V_MIN -50.0f
-#define V_MAX 50.0f
-#define T_MIN -18.0f
-#define T_MAX 18.0f
+#define V_MIN -25.0f
+#define V_MAX 25.0f
+#define T_MIN -200.0f
+#define T_MAX 200.0f
 #define KP_MIN 0.0f
 #define KP_MAX 500.0f
 #define KD_MIN 0.0f
@@ -65,17 +59,19 @@ typedef struct
 
 typedef struct
 {
-	uint16_t motor_id;
+	uint16_t ERR;
 
-	uint16_t current_position; //[0~65535]对应(-4π~4π)
-	uint16_t current_speed;	   //[0~65535]对应(-15rad/s~15rad/s)
-	uint16_t current_torque;   //[0~65535]对应�????-120Nm~120Nm�????
-	uint16_t current_temp;	   // 当前温度：Temp(摄氏度）*10
+	uint16_t current_position; //
+	uint16_t current_speed;	   //
+	uint16_t current_torque;   //
+	uint16_t current_temp_MOS;	   //
+	uint16_t current_temp_Rotor;	   //
 
-	float current_position_f;//[0~65535]对应(-4π~4π)
-	float current_speed_f;//[0~65535]对应(-15rad/s~15rad/s)
-	float current_torque_f;//[0~65535]对应�??????-120Nm~120Nm�??????
-	float current_temp_f;//当前温度：Temp(摄氏度）*10
+
+	float current_position_f;//
+	float current_speed_f;//
+	float current_torque_f;//
+
 
 	
 

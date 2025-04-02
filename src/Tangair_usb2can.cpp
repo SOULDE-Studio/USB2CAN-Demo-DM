@@ -105,7 +105,6 @@ void Tangair_usb2can::CAN_RX_device_0_thread()
         FrameInfo info_rx;
         uint8_t data_rx[8] = {0};
 
-        //
         can_dev0_rx_count_thread++;
 
         // 阻塞1s接收
@@ -117,41 +116,37 @@ void Tangair_usb2can::CAN_RX_device_0_thread()
         {
             can_dev0_rx_count++;
             // 解码
-            CAN_DEV0_RX.motor_id = data_rx[0];
-
-            
+            CAN_DEV0_RX.ERR = data_rx[0]>>4&0X0F;
             
             CAN_DEV0_RX.current_position = (data_rx[1]<<8)|data_rx[2]; //电机位置数据
 			CAN_DEV0_RX.current_speed  = (data_rx[3]<<4)|(data_rx[4]>>4); //电机速度数据
 			CAN_DEV0_RX.current_torque = ((data_rx[4]&0xF)<<8)|data_rx[5]; //电机扭矩数据
-			 CAN_DEV0_RX.current_temp  = data_rx[6] ;
-
-            
-        
+			CAN_DEV0_RX.current_temp_MOS  = data_rx[6];
+            CAN_DEV0_RX.current_temp_Rotor  = data_rx[7];
             // 转换
             CAN_DEV0_RX.current_position_f = uint_to_float(CAN_DEV0_RX.current_position, (P_MIN), (P_MAX), 16);
             CAN_DEV0_RX.current_speed_f = uint_to_float(CAN_DEV0_RX.current_speed, (V_MIN), (V_MAX), 12);    
             CAN_DEV0_RX.current_torque_f = uint_to_float(CAN_DEV0_RX.current_torque, (T_MIN), (T_MAX), 12);
-            CAN_DEV0_RX.current_temp_f = (float)CAN_DEV0_RX.current_temp -40;                              //温度单位为摄氏度
+  
      
 
             if (channel == 1) // 模块0，can1
             {
-                switch (CAN_DEV0_RX.motor_id)
+                switch (info_rx.canID)
                 {
-                case 1:
+                case 0X11:
                 {
                     USB2CAN0_CAN_Bus_1.ID_1_motor_recieve = CAN_DEV0_RX;
                    
                     break;
                 }
-                case 2:
+                case 0X22:
                 {
                     USB2CAN0_CAN_Bus_1.ID_2_motor_recieve = CAN_DEV0_RX;
                    
                     break;
                 }
-                case 3:
+                case 0X33:
                 {
                     USB2CAN0_CAN_Bus_1.ID_3_motor_recieve = CAN_DEV0_RX;
                     
@@ -164,21 +159,21 @@ void Tangair_usb2can::CAN_RX_device_0_thread()
             }
             else if (channel == 2) // 模块0，can2
             {
-                switch (CAN_DEV0_RX.motor_id)
+                switch (info_rx.canID)
                 {
-                case 1:
+                case 0X11:
                 {
                     USB2CAN0_CAN_Bus_2.ID_1_motor_recieve = CAN_DEV0_RX;
                   
                     break;
                 }
-                case 2:
+                case 0X22:
                 {
                     USB2CAN0_CAN_Bus_2.ID_2_motor_recieve = CAN_DEV0_RX;
                    
                     break;
                 }
-                case 3:
+                case 0X33:
                 {
                     USB2CAN0_CAN_Bus_2.ID_3_motor_recieve = CAN_DEV0_RX;
                    
@@ -215,35 +210,36 @@ void Tangair_usb2can::CAN_RX_device_1_thread()
         {
             can_dev1_rx_count++;
            // 解码
-            CAN_DEV1_RX.motor_id = data_rx[0];
+            CAN_DEV1_RX.ERR =data_rx[0]>>4&0X0F;
             
             CAN_DEV1_RX.current_position = (data_rx[1]<<8)|data_rx[2]; //电机位置数据
 			CAN_DEV1_RX.current_speed  = (data_rx[3]<<4)|(data_rx[4]>>4); //电机速度数据
 			CAN_DEV1_RX.current_torque = ((data_rx[4]&0xF)<<8)|data_rx[5]; //电机扭矩数据
-			CAN_DEV1_RX.current_temp  = data_rx[6] ;
+			CAN_DEV1_RX.current_temp_MOS  = data_rx[6] ;
+            CAN_DEV1_RX.current_temp_Rotor  = data_rx[7] ;
         
             // 转换
             CAN_DEV1_RX.current_position_f = uint_to_float(CAN_DEV1_RX.current_position, (P_MIN), (P_MAX), 16);
             CAN_DEV1_RX.current_speed_f = uint_to_float(CAN_DEV1_RX.current_speed, (V_MIN), (V_MAX), 12);    
             CAN_DEV1_RX.current_torque_f = uint_to_float(CAN_DEV1_RX.current_torque, (T_MIN), (T_MAX), 12);
-            CAN_DEV1_RX.current_temp_f = (float)CAN_DEV1_RX.current_temp -40;                              //温度单位为摄氏度
+                        
 
             if (channel == 1)  // 模块1，can1
             {
-                switch (CAN_DEV1_RX.motor_id)
+                switch (info_rx.canID)
                 {
-                case 1:
+                case 0X11:
                 {
                     USB2CAN1_CAN_Bus_1.ID_1_motor_recieve = CAN_DEV1_RX;
                     break;
                 }
-                case 2:
+                case 0X22:
                 {
                     USB2CAN1_CAN_Bus_1.ID_2_motor_recieve = CAN_DEV1_RX;
                     
                     break;
                 }
-                case 3:
+                case 0X33:
                 {
                     USB2CAN1_CAN_Bus_1.ID_3_motor_recieve = CAN_DEV1_RX;
                    
@@ -256,21 +252,21 @@ void Tangair_usb2can::CAN_RX_device_1_thread()
             }
             else if (channel == 2)  // 模块1，can2
             {
-                switch (CAN_DEV1_RX.motor_id)
+                switch (info_rx.canID)
                 {
-                case 1:
+                case 0X11:
                 {
                     USB2CAN1_CAN_Bus_2.ID_1_motor_recieve = CAN_DEV1_RX;
                    
                     break;
                 }
-                case 2:
+                case 0X22:
                 {
                     USB2CAN1_CAN_Bus_2.ID_2_motor_recieve = CAN_DEV1_RX;
                     
                     break;
                 }
-                case 3:
+                case 0X33:
                 {
                     USB2CAN1_CAN_Bus_2.ID_3_motor_recieve = CAN_DEV1_RX;
                     
@@ -299,7 +295,6 @@ void Tangair_usb2can::CAN_TX_test_thread()
     speed_input = 2;
     //电机控制参数配置，单纯给速度
     {
-        
         USB2CAN0_CAN_Bus_1.ID_1_motor_send.position = 0;
         USB2CAN0_CAN_Bus_1.ID_1_motor_send.speed = 2;
         USB2CAN0_CAN_Bus_1.ID_1_motor_send.torque = 0;
@@ -438,19 +433,15 @@ void Tangair_usb2can::keyborad_input()
 
 void Tangair_usb2can::USB2CAN_CAN_Bus_inti_set(USB2CAN_CAN_Bus_Struct *CAN_Bus)
 {
-    CAN_Bus->ID_1_motor_send.id = 1;
-    CAN_Bus->ID_1_motor_send.max_position = 2;
-    CAN_Bus->ID_1_motor_send.min_position = -2;
+    CAN_Bus->ID_1_motor_send.id = 0X01;
+ 
 
     
-    CAN_Bus->ID_2_motor_send.id = 2;
-    CAN_Bus->ID_2_motor_send.max_position = 2;
-    CAN_Bus->ID_2_motor_send.min_position = -2;
-
+    CAN_Bus->ID_2_motor_send.id = 0X02;
+ 
     
-    CAN_Bus->ID_3_motor_send.id = 3;
-    CAN_Bus->ID_3_motor_send.max_position = 2;
-    CAN_Bus->ID_3_motor_send.min_position = -2;
+    CAN_Bus->ID_3_motor_send.id = 0X03;
+
 
 
 }
