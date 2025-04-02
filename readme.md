@@ -26,6 +26,7 @@ sudo udevadm trigger
 >请提前使用达妙上位机设置好电机 CAN ID与Master ID，并确保电机ID与Master ID对应关系与程序中一致，否则程序将无法正常工作。
 
 >注意：电机CAN口与USB2CAN模块CAN口线序相反，请用反序CAN连接。
+
 >     使用前请提前开启达妙电机120欧电阻，否则无法正常工作。
 
 ```USB转2路CAN模块购买地址：```
