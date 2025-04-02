@@ -19,7 +19,11 @@ sudo cp usb_can.rules /etc/udev/rules.d/
 sudo udevadm trigger
 ```
 
->DM电机初始模式为伺服控制模式，本程序使用于运控模式，请提前使用DM官方模块和上位机将电机模式切换为运控模式，模式切换之后，掉电之后，模式仍会保持运控模式，无需重复设置。
+>DM电机通过达妙上位机设置被控电机ID，即CAN ID，以及电机反馈报文ID ,即Master ID（默认为0），为了避免反馈帧冲突，本程序建立电机ID与反馈ID对应关系
+>CAN ID为0x01的电机,其Master ID设置为0x11
+>CAN ID为0x02的电机,其Master ID设置为0x22
+>CAN ID为0x03的电机,其Master ID设置为0x33
+>请提前使用达妙上位机设置好电机 CAN ID与Master ID，并确保电机ID与Master ID对应关系与程序中一致，否则程序将无法正常工作。
 
 
 ```USB转2路CAN模块购买地址：```
@@ -62,7 +66,7 @@ make
 2. 若还需要拓展多个USB2CAN模块，可在本程序基础上进行修改，一个电脑最多拓展4个模块即8路CAN总线。
 3. 在同一模块的同一条CAN总线发送的控制命令间隔不应小于300us，可以交错发送不同CAN总线上的控制命令
 4. 程序封装了电机数据结构体，只需要对结构体对象赋值再调用发送函数，即可控制电机，赋值数值范围请参考DM电机说明书
-5. 本程序使用DM AK80-9KV100电机，如使用其他型号电机请修改头文件`include/Tangair_usb2can.h`参数。
+5. 本程序使用达妙DM-J10010L-2EC电机，如使用其他型号电机请修改头文件`include/Tangair_usb2can.h`参数。
 6. 本程序主要控制函数为:
 >`src/Tangair_usb2can.cpp: void Tangair_usb2can::CAN_TX_test_thread()`包括电机初始参数设置，电机实时控制指令，电机控制命令发送，数据打印。
 >可以在此函数添加用户自定义控制代码。
