@@ -22,8 +22,21 @@
 float uint_to_float(int x_int, float x_min, float x_max, int bits);
 int float_to_uint(float x, float x_min, float x_max, int bits);
 
+//达妙其他电机参数    {P, V, T}
+				// {12.5, 30, 10 }, // DM4310
+				// {12.5, 50, 10 }, // DM4310_48V
+				// {12.5, 8, 28 },  // DM4340
+				// {12.5, 10, 28 }, // DM4340_48V
+				// {12.5, 45, 20 }, // DM6006
+				// {12.5, 45, 40 }, // DM8006
+				// {12.5, 45, 54 }, // DM8009
+				// {12.5,25,  200}, // DM10010L
+				// {12.5,20, 200},  // DM10010
+				// {12.5,280,1},    // DMH3510
+				// {12.5,45,10},    // DMH6215
+				// {12.5,45,10}     // DMG6220
 
-// 达妙电机,此处为DM参数
+// 达妙电机,此处为DM10010L参数
 #define P_MIN -12.5f
 #define P_MAX 12.5f
 #define V_MIN -25.0f
