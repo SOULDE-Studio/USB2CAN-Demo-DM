@@ -25,7 +25,7 @@ sudo udevadm trigger
 >CAN ID为0x03的电机,其Master ID设置为0x33
 >请提前使用达妙上位机设置好电机 CAN ID与Master ID，并确保电机ID与Master ID对应关系与程序中一致，否则程序将无法正常工作。
 
->注意：电机CAN口与USB2CAN模块CAN口线序相反，请用反序CAN连接。
+>注意：电机CAN口的H和L与USB2CAN模块CAN口的H和L要对应连接，高对高，低对低。
 
 >     使用前请提前开启达妙电机120欧电阻，否则无法正常工作。
 
